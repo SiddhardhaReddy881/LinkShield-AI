@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+html {
+  scroll-behavior: smooth;
+}
+
 html,
 body,
 #root {
@@ -9,6 +13,11 @@ body,
   margin: 0;
   padding: 0;
   background: #020617;
+  color: white;
+}
+
+body {
+  font-family: Inter, sans-serif;
 }
 
 *,
@@ -17,10 +26,127 @@ body,
   box-sizing: border-box;
 }
 
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #22c55e #0f172a;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    #22c55e,
+    #16a34a
+  );
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #22c55e;
+}
+
 img,
 svg,
 canvas,
 video {
   max-width: 100%;
   height: auto;
+}
+
+button,
+a {
+  transition: all 0.3s ease;
+}
+
+button:hover,
+a:hover {
+  transform: translateY(-2px);
+}
+
+::selection {
+  background: #22c55e;
+  color: black;
+}
+
+input,
+textarea,
+button {
+  font: inherit;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+}
+
+.glass {
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.glow-green {
+  box-shadow: 0 0 25px rgba(34,197,94,.35);
+}
+
+.card-hover {
+  transition: all .35s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 35px rgba(34,197,94,.15);
+}
+
+.fade-up {
+  animation: fadeUp .7s ease;
+}
+
+@keyframes fadeUp {
+
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+@media (max-width:640px){
+
+  html{
+    font-size:15px;
+  }
+
+}
+@keyframes floatGlow {
+
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+
+}
+
+.float-glow {
+  animation: floatGlow 3s ease-in-out infinite;
 }

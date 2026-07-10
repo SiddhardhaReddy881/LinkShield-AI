@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
 import { motion } from "framer-motion";
+import CountUp from "react-countup";
 import {
   ResponsiveContainer,
   BarChart,
@@ -106,15 +107,15 @@ function Analytics() {
   return (
     <section
       id="analytics"
-      className="max-w-7xl mx-auto mt-16 px-6"
+      className="max-w-7xl mx-auto mt-16 px-4 sm:px-6 lg:px-8"
     >
-      <div className="bg-slate-900 border border-slate-700 rounded-3xl shadow-2xl p-8">
+      <div className="bg-slate-900 border border-slate-700 rounded-3xl shadow-[0_0_50px_rgba(34,197,94,0.12)] p-5 md:p-8">
 
-        <h2 className="text-4xl font-bold text-white text-center mb-12">
+        <h2 className="text-3xl md:text-5xl font-extrabold text-white text-center mb-10">
           📊 Analytics Dashboard
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
 
           {cards.map((card, index) => {
             const Icon = card.icon;
@@ -126,19 +127,22 @@ function Analytics() {
                   scale: 1.05,
                   y: -5,
                 }}
-                className={`bg-gradient-to-br ${card.color} rounded-2xl p-6 shadow-lg`}
+                className={`bg-gradient-to-br ${card.color} rounded-3xl p-5 md:p-6 shadow-xl hover:shadow-2xl transition-all duration-300`}
               >
                 <Icon
-                  size={38}
+                  size={34}
                   className="text-white mb-4"
                 />
 
-                <p className="text-white text-lg">
+                <p className="text-white text-base md:text-lg">
                   {card.title}
                 </p>
 
-                <h3 className="text-5xl font-bold text-white mt-4">
-                  {card.value}
+                <h3 className="text-4xl md:text-5xl font-bold text-white mt-4">
+                  <CountUp
+                    end={card.value}
+                    duration={2}
+                  />
                 </h3>
               </motion.div>
             );
@@ -146,20 +150,20 @@ function Analytics() {
 
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8 mt-10">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 md:gap-8 mt-10">
 
           <motion.div
             whileHover={{ scale: 1.01 }}
-            className="bg-slate-800 rounded-2xl p-8 border border-slate-700"
+            className="bg-slate-800 rounded-3xl border border-slate-700 p-5 md:p-8 shadow-lg"
           >
 
-            <h3 className="text-2xl font-bold text-white mb-8">
+            <h3 className="text-xl md:text-2xl font-bold text-white mb-6">
               Threat Distribution
             </h3>
 
             <ResponsiveContainer
               width="100%"
-              height={350}
+              height={300}
             >
 
               <BarChart data={chartData}>
@@ -202,14 +206,14 @@ function Analytics() {
 
           <motion.div
             whileHover={{ scale: 1.01 }}
-            className="bg-slate-800 rounded-2xl border border-slate-700 p-8"
+            className="bg-slate-800 rounded-3xl border border-slate-700 p-5 md:p-8 shadow-lg"
           >
 
-            <h3 className="text-2xl font-bold text-white mb-8">
+            <h3 className="text-xl md:text-2xl font-bold text-white mb-6">
               Overall Statistics
             </h3>
 
-            <div className="space-y-8">
+            <div className="space-y-6 md:space-y-8">
 
               <div>
 
@@ -217,8 +221,12 @@ function Analytics() {
                   Average Threat Score
                 </p>
 
-                <h2 className="text-5xl font-bold text-green-400 mt-2">
-                  {averageScore}
+                <h2 className="text-4xl md:text-5xl font-bold text-green-400 mt-2">
+                  <CountUp
+                    end={Number(averageScore)}
+                    decimals={1}
+                    duration={2}
+                  />
                 </h2>
 
               </div>
@@ -229,7 +237,7 @@ function Analytics() {
                   Security Status
                 </p>
 
-                <h2 className="text-3xl font-bold text-white mt-2">
+                <h2 className="text-2xl md:text-3xl font-bold text-white mt-2">
                   {malicious === 0
                     ? "Excellent"
                     : suspicious > malicious
@@ -245,8 +253,11 @@ function Analytics() {
                   Last Scan Count
                 </p>
 
-                <h2 className="text-3xl font-bold text-cyan-400 mt-2">
-                  {total}
+                <h2 className="text-2xl md:text-3xl font-bold text-cyan-400 mt-2">
+                  <CountUp
+                    end={total}
+                    duration={2}
+                  />
                 </h2>
 
               </div>

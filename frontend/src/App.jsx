@@ -5,31 +5,39 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 
+import BackToTop from "./components/BackToTop";
+
 function App() {
   return (
-    <Routes>
+    <>
 
-      <Route
-        path="/"
-        element={<Home />}
-      />
+      <Routes>
 
-      <Route
-        path="/login"
-        element={<Login />}
-      />
+        <Route
+          path="/"
+          element={<Home />}
+        />
 
-      <Route
-        path="/register"
-        element={<Register />}
-      />
+        <Route
+          path="/login"
+          element={<Login />}
+        />
 
-      <Route
-        path="/forgot-password"
-        element={<ForgotPassword />}
-      />
+        <Route
+          path="/register"
+          element={<Register />}
+        />
 
-    </Routes>
+        <Route
+          path="/forgot-password"
+          element={<ForgotPassword />}
+        />
+
+      </Routes>
+
+      <BackToTop />
+
+    </>
   );
 }
 

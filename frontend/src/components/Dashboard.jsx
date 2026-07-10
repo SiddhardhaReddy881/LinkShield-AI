@@ -13,10 +13,10 @@ function Dashboard({ data }) {
   const score = data.threat_analysis?.overall_score || 0;
 
   return (
-    <div className="mt-10 bg-slate-900 border border-slate-700 rounded-2xl p-8 shadow-xl">
+    <div className="mt-10 bg-slate-900 border border-slate-700 rounded-3xl p-5 md:p-8 shadow-[0_0_50px_rgba(34,197,94,0.12)] overflow-hidden">
 
       {/* Dashboard Title */}
-      <h1 className="text-3xl font-bold text-white text-center mb-10">
+      <h1 className="text-2xl md:text-4xl font-extrabold text-white text-center mb-8 md:mb-10">
         🛡 LinkShield AI Dashboard
       </h1>
 
@@ -24,13 +24,13 @@ function Dashboard({ data }) {
       <SecurityScoreBar score={score} />
 
       {/* Buttons */}
-      <div className="flex justify-end gap-4 mb-8">
+      <div className="flex flex-col sm:flex-row justify-end gap-3 mb-8">
         <CopyURLButton url={data.url} />
         <ExportPDFButton data={data} />
       </div>
 
       {/* Threat Gauge */}
-      <div className="flex flex-col lg:flex-row items-center justify-center gap-10">
+      <div className="flex flex-col xl:flex-row items-center justify-center gap-8 md:gap-10">
 
         <ThreatGauge score={score} />
 
@@ -39,7 +39,7 @@ function Dashboard({ data }) {
       </div>
 
       {/* Information Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mt-10">
 
         <InfoCard
           icon="🛡"
@@ -123,13 +123,13 @@ function Dashboard({ data }) {
       />
 
       {/* Server Location */}
-      <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 mt-8">
+      <div className="bg-slate-800 border border-slate-700 rounded-3xl p-5 md:p-7 mt-10 shadow-lg">
 
-        <h2 className="text-2xl font-bold text-white mb-5">
+        <h2 className="text-xl md:text-3xl font-bold text-white mb-6">
           🌍 Website Hosting Server
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
 
           <InfoCard
             icon="🌍"
@@ -169,13 +169,13 @@ function Dashboard({ data }) {
 
         </div>
 
-        <div className="flex justify-center mt-8">
+        <div className="flex justify-center mt-8 px-2">
 
           <a
             href={`https://www.google.com/maps?q=${data.ip_info?.latitude},${data.ip_info?.longitude}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl text-white font-semibold transition"
+            className="w-full sm:w-auto text-center bg-blue-600 hover:bg-blue-700 hover:scale-105 px-6 py-4 rounded-2xl text-white font-semibold transition-all duration-300 shadow-lg"
           >
             📍 Open in Google Maps
           </a>
@@ -184,39 +184,39 @@ function Dashboard({ data }) {
 
         {/* Information Box */}
 
-        <div className="mt-6 bg-blue-950 border border-blue-700 rounded-xl p-5">
+        <div className="mt-8 bg-blue-950 border border-blue-700 rounded-2xl p-5 md:p-6 shadow-lg">
 
-          <h3 className="text-blue-300 text-lg font-bold mb-3">
+          <h3 className="text-blue-300 text-lg md:text-xl font-bold mb-4">
             ℹ Website Hosting Server Information
           </h3>
 
-          <p className="text-gray-300 leading-8">
+          <p className="text-gray-300 text-sm md:text-base leading-7 md:leading-8">
 
-The information shown above represents the
-<span className="text-green-400 font-semibold">
-  {" "}website's hosting server
-</span>,
-not your current location.
+            The information shown above represents the
+            <span className="text-green-400 font-semibold">
+              {" "}website's hosting server
+            </span>,
+            not your current location.
 
-<br /><br />
+            <br /><br />
 
-Many popular websites such as
-<span className="text-green-400 font-semibold">
-  {" "}Google, Microsoft, GitHub, Facebook, Amazon and Cloudflare
-</span>
-use multiple servers around the world through
-Content Delivery Networks (CDNs) and global load balancing.
+            Many popular websites such as
+            <span className="text-green-400 font-semibold">
+              {" "}Google, Microsoft, GitHub, Facebook, Amazon and Cloudflare
+            </span>
+            use multiple servers around the world through
+            Content Delivery Networks (CDNs) and global load balancing.
 
-<br /><br />
+            <br /><br />
 
-As a result, the server IP address, city, region and country may change
-between scans depending on which server responds to your request.
+            As a result, the server IP address, city, region and country may change
+            between scans depending on which server responds to your request.
 
-<br /><br />
+            <br /><br />
 
-✅ This is normal behavior and does not indicate that the website is malicious.
+            ✅ This is normal behavior and does not indicate that the website is malicious.
 
-</p>
+          </p>
 
         </div>
 
