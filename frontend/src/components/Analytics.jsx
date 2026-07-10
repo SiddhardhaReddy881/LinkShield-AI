@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
 import { motion } from "framer-motion";
-import CountUp from "react-countup";
+
 import {
   ResponsiveContainer,
   BarChart,
@@ -12,6 +12,7 @@ import {
   Tooltip,
   Cell,
 } from "recharts";
+
 import {
   ShieldCheck,
   AlertTriangle,
@@ -138,12 +139,9 @@ function Analytics() {
                   {card.title}
                 </p>
 
-                <h3 className="text-4xl md:text-5xl font-bold text-white mt-4">
-                  <CountUp
-                    end={card.value}
-                    duration={2}
-                  />
-                </h3>
+             <h3 className="text-4xl md:text-5xl font-bold text-white mt-4">
+  {card.value}
+</h3>
               </motion.div>
             );
           })}
@@ -161,46 +159,37 @@ function Analytics() {
               Threat Distribution
             </h3>
 
-            <ResponsiveContainer
-              width="100%"
-              height={300}
-            >
+           <ResponsiveContainer width="100%" height={350}>
+  <BarChart data={chartData}>
+    <CartesianGrid
+      stroke="#475569"
+      strokeDasharray="3 3"
+    />
 
-              <BarChart data={chartData}>
+    <XAxis
+      dataKey="name"
+      stroke="#ffffff"
+    />
 
-                <CartesianGrid
-                  stroke="#475569"
-                  strokeDasharray="3 3"
-                />
+    <YAxis
+      stroke="#ffffff"
+    />
 
-                <XAxis
-                  dataKey="name"
-                  stroke="#ffffff"
-                />
+    <Tooltip />
 
-                <YAxis stroke="#ffffff" />
-
-                <Tooltip />
-
-                <Bar
-                  dataKey="count"
-                  radius={[10, 10, 0, 0]}
-                >
-
-                  {chartData.map((entry, index) => (
-
-                    <Cell
-                      key={index}
-                      fill={entry.color}
-                    />
-
-                  ))}
-
-                </Bar>
-
-              </BarChart>
-
-            </ResponsiveContainer>
+    <Bar
+      dataKey="count"
+      radius={[10, 10, 0, 0]}
+    >
+      {chartData.map((entry, index) => (
+        <Cell
+          key={index}
+          fill={entry.color}
+        />
+      ))}
+    </Bar>
+  </BarChart>
+</ResponsiveContainer>
 
           </motion.div>
 
@@ -221,13 +210,9 @@ function Analytics() {
                   Average Threat Score
                 </p>
 
-                <h2 className="text-4xl md:text-5xl font-bold text-green-400 mt-2">
-                  <CountUp
-                    end={Number(averageScore)}
-                    decimals={1}
-                    duration={2}
-                  />
-                </h2>
+               <h2 className="text-4xl md:text-5xl font-bold text-green-400 mt-2">
+  {averageScore}
+</h2>
 
               </div>
 
@@ -253,12 +238,9 @@ function Analytics() {
                   Last Scan Count
                 </p>
 
-                <h2 className="text-2xl md:text-3xl font-bold text-cyan-400 mt-2">
-                  <CountUp
-                    end={total}
-                    duration={2}
-                  />
-                </h2>
+               <h2 className="text-2xl md:text-3xl font-bold text-cyan-400 mt-2">
+  {total}
+</h2>
 
               </div>
 

@@ -18,17 +18,18 @@ function Home() {
 
       <Navbar />
 
-      <Hero />
+<Hero />
 
-      <URLScanner
-        onScanComplete={() =>
-          setRefreshHistory((prev) => prev + 1)
-        }
-      />
 
-      <Statistics />
+<URLScanner
+  onScanComplete={() =>
+    setRefreshHistory((prev) => prev + 1)
+  }
+/> 
 
-      <Analytics />
+<Statistics />
+
+<Analytics />
 
       <ScanHistory
         refresh={refreshHistory}
