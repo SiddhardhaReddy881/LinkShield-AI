@@ -166,10 +166,14 @@ function Analytics() {
       strokeDasharray="3 3"
     />
 
-    <XAxis
-      dataKey="name"
-      stroke="#ffffff"
-    />
+   <XAxis
+  dataKey="name"
+  stroke="#ffffff"
+  interval={0}
+  angle={-20}
+  textAnchor="end"
+  height={60}
+/>
 
     <YAxis
       stroke="#ffffff"
