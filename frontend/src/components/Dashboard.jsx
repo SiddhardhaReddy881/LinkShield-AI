@@ -20,16 +20,16 @@ function Dashboard({ data }) {
         🛡 LinkShield AI Dashboard
       </h1>
 
-      {/* Security Score Bar */}
+      {/* Security Score */}
       <SecurityScoreBar score={score} />
 
-      {/* Top Buttons */}
+      {/* Buttons */}
       <div className="flex justify-end gap-4 mb-8">
         <CopyURLButton url={data.url} />
         <ExportPDFButton data={data} />
       </div>
 
-      {/* Threat Score */}
+      {/* Threat Gauge */}
       <div className="flex flex-col lg:flex-row items-center justify-center gap-10">
 
         <ThreatGauge score={score} />
@@ -126,7 +126,7 @@ function Dashboard({ data }) {
       <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 mt-8">
 
         <h2 className="text-2xl font-bold text-white mb-5">
-          🌍 Server Location
+          🌍 Website Hosting Server
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -170,6 +170,7 @@ function Dashboard({ data }) {
         </div>
 
         <div className="flex justify-center mt-8">
+
           <a
             href={`https://www.google.com/maps?q=${data.ip_info?.latitude},${data.ip_info?.longitude}`}
             target="_blank"
@@ -178,11 +179,51 @@ function Dashboard({ data }) {
           >
             📍 Open in Google Maps
           </a>
+
+        </div>
+
+        {/* Information Box */}
+
+        <div className="mt-6 bg-blue-950 border border-blue-700 rounded-xl p-5">
+
+          <h3 className="text-blue-300 text-lg font-bold mb-3">
+            ℹ Website Hosting Server Information
+          </h3>
+
+          <p className="text-gray-300 leading-8">
+
+The information shown above represents the
+<span className="text-green-400 font-semibold">
+  {" "}website's hosting server
+</span>,
+not your current location.
+
+<br /><br />
+
+Many popular websites such as
+<span className="text-green-400 font-semibold">
+  {" "}Google, Microsoft, GitHub, Facebook, Amazon and Cloudflare
+</span>
+use multiple servers around the world through
+Content Delivery Networks (CDNs) and global load balancing.
+
+<br /><br />
+
+As a result, the server IP address, city, region and country may change
+between scans depending on which server responds to your request.
+
+<br /><br />
+
+✅ This is normal behavior and does not indicate that the website is malicious.
+
+</p>
+
         </div>
 
       </div>
 
       {/* AI Explanation */}
+
       <AIExplanation data={data} />
 
     </div>

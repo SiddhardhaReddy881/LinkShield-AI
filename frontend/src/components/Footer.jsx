@@ -1,6 +1,5 @@
 import {
   ShieldCheck,
-  Github,
   Mail,
   Globe,
 } from "lucide-react";
@@ -13,19 +12,17 @@ function Footer() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
 
-          {/* Logo */}
+          {/* About */}
 
           <div>
 
             <div className="flex items-center gap-3">
 
               <div className="bg-green-500 p-2 rounded-xl">
-
                 <ShieldCheck
                   className="text-black"
                   size={30}
                 />
-
               </div>
 
               <div>
@@ -43,12 +40,9 @@ function Footer() {
             </div>
 
             <p className="text-gray-400 mt-5 leading-7">
-
-              LinkShield AI is an intelligent phishing URL
-              detection platform powered by AI, WHOIS,
-              VirusTotal, Google Safe Browsing, SSL
-              verification and DNS analysis.
-
+              LinkShield AI is an intelligent phishing URL detection
+              platform powered by AI, VirusTotal, WHOIS,
+              Google Safe Browsing, DNS analysis and SSL verification.
             </p>
 
           </div>
@@ -63,37 +57,110 @@ function Footer() {
 
             <ul className="space-y-3 text-gray-400">
 
-              <li>🏠 Home</li>
+              <li>
+                <a
+                  href="#home"
+                  className="hover:text-green-400 transition"
+                >
+                  🏠 Home
+                </a>
+              </li>
 
-              <li>📊 Analytics</li>
+              <li>
+                <a
+                  href="#analytics"
+                  className="hover:text-green-400 transition"
+                >
+                  📊 Analytics
+                </a>
+              </li>
 
-              <li>📜 Scan History</li>
+              <li>
+                <a
+                  href="#history"
+                  className="hover:text-green-400 transition"
+                >
+                  📜 Scan History
+                </a>
+              </li>
 
-              <li>⭐ Features</li>
+              <li>
+                <a
+                  href="#features"
+                  className="hover:text-green-400 transition"
+                >
+                  ⭐ Features
+                </a>
+              </li>
 
             </ul>
 
           </div>
 
-          {/* Tech Stack */}
+          {/* Technology */}
 
           <div>
 
             <h3 className="text-xl text-white font-bold mb-5">
-              Technology Stack
+              Technology
             </h3>
 
             <ul className="space-y-3 text-gray-400">
 
-              <li>⚛ React + Vite</li>
+              <li>
+                <a
+                  href="https://react.dev"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-green-400 transition"
+                >
+                  ⚛ React + Vite
+                </a>
+              </li>
 
-              <li>🐍 FastAPI</li>
+              <li>
+                <a
+                  href="https://fastapi.tiangolo.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-green-400 transition"
+                >
+                  🐍 FastAPI
+                </a>
+              </li>
 
-              <li>🗄 SQLite</li>
+              <li>
+                <a
+                  href="https://sqlite.org"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-green-400 transition"
+                >
+                  🗄 SQLite
+                </a>
+              </li>
 
-              <li>🤖 AI Threat Detection</li>
+              <li>
+                <a
+                  href="https://www.virustotal.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-green-400 transition"
+                >
+                  🛡 VirusTotal API
+                </a>
+              </li>
 
-              <li>🌐 VirusTotal API</li>
+              <li>
+                <a
+                  href="https://www.tensorflow.org/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-green-400 transition"
+                >
+                  🤖 AI Threat Analysis
+                </a>
+              </li>
 
             </ul>
 
@@ -106,24 +173,26 @@ function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center">
 
           <p className="text-gray-400">
-
-            © 2026 LinkShield AI • Developed as a Cyber Security Project
-
+            © 2026 LinkShield AI • Cyber Security Project
           </p>
 
           <div className="flex gap-5 mt-5 md:mt-0">
 
-            <Github
-              className="text-gray-400 hover:text-white cursor-pointer transition"
-            />
+            <a href="mailto:your_email@example.com">
+              <Mail
+                className="text-gray-400 hover:text-green-400 transition cursor-pointer"
+              />
+            </a>
 
-            <Mail
-              className="text-gray-400 hover:text-white cursor-pointer transition"
-            />
-
-            <Globe
-              className="text-gray-400 hover:text-white cursor-pointer transition"
-            />
+            <a
+              href="https://github.com/your-github-username"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Globe
+                className="text-gray-400 hover:text-green-400 transition cursor-pointer"
+              />
+            </a>
 
           </div>
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
-
+import { motion } from "framer-motion";
 import {
   ResponsiveContainer,
   BarChart,
@@ -11,6 +11,12 @@ import {
   Tooltip,
   Cell,
 } from "recharts";
+import {
+  ShieldCheck,
+  AlertTriangle,
+  ShieldAlert,
+  Database,
+} from "lucide-react";
 
 function Analytics() {
   const [history, setHistory] = useState([]);
@@ -42,6 +48,16 @@ function Analytics() {
     (item) => item.classification === "MALICIOUS"
   ).length;
 
+  const averageScore =
+    total > 0
+      ? (
+          history.reduce(
+            (sum, item) => sum + item.threat_score,
+            0
+          ) / total
+        ).toFixed(1)
+      : 0;
+
   const chartData = [
     {
       name: "SAFE",
@@ -60,91 +76,97 @@ function Analytics() {
     },
   ];
 
+  const cards = [
+    {
+      title: "Total Scans",
+      value: total,
+      icon: Database,
+      color: "from-blue-600 to-cyan-600",
+    },
+    {
+      title: "Safe URLs",
+      value: safe,
+      icon: ShieldCheck,
+      color: "from-green-600 to-emerald-600",
+    },
+    {
+      title: "Suspicious",
+      value: suspicious,
+      icon: AlertTriangle,
+      color: "from-yellow-500 to-orange-500",
+    },
+    {
+      title: "Malicious",
+      value: malicious,
+      icon: ShieldAlert,
+      color: "from-red-600 to-pink-600",
+    },
+  ];
+
   return (
-    <div
-  id="analytics"
-  className="max-w-7xl mx-auto mt-14 px-6"
->
+    <section
+      id="analytics"
+      className="max-w-7xl mx-auto mt-16 px-6"
+    >
+      <div className="bg-slate-900 border border-slate-700 rounded-3xl shadow-2xl p-8">
 
-      <div className="bg-slate-900 border border-slate-700 rounded-2xl shadow-xl p-8">
-
-        <h2 className="text-3xl font-bold text-white mb-8">
+        <h2 className="text-4xl font-bold text-white text-center mb-12">
           📊 Analytics Dashboard
         </h2>
 
-        {/* Summary Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+          {cards.map((card, index) => {
+            const Icon = card.icon;
 
-          <div className="bg-slate-800 rounded-xl p-6 text-center">
+            return (
+              <motion.div
+                key={index}
+                whileHover={{
+                  scale: 1.05,
+                  y: -5,
+                }}
+                className={`bg-gradient-to-br ${card.color} rounded-2xl p-6 shadow-lg`}
+              >
+                <Icon
+                  size={38}
+                  className="text-white mb-4"
+                />
 
-            <h3 className="text-gray-400">
-              Total Scans
-            </h3>
+                <p className="text-white text-lg">
+                  {card.title}
+                </p>
 
-            <p className="text-4xl font-bold text-white mt-3">
-              {total}
-            </p>
-
-          </div>
-
-          <div className="bg-green-700 rounded-xl p-6 text-center">
-
-            <h3 className="text-white">
-              Safe URLs
-            </h3>
-
-            <p className="text-4xl font-bold text-white mt-3">
-              {safe}
-            </p>
-
-          </div>
-
-          <div className="bg-yellow-500 rounded-xl p-6 text-center">
-
-            <h3 className="text-white">
-              Suspicious
-            </h3>
-
-            <p className="text-4xl font-bold text-white mt-3">
-              {suspicious}
-            </p>
-
-          </div>
-
-          <div className="bg-red-600 rounded-xl p-6 text-center">
-
-            <h3 className="text-white">
-              Malicious
-            </h3>
-
-            <p className="text-4xl font-bold text-white mt-3">
-              {malicious}
-            </p>
-
-          </div>
+                <h3 className="text-5xl font-bold text-white mt-4">
+                  {card.value}
+                </h3>
+              </motion.div>
+            );
+          })}
 
         </div>
 
-        {/* Threat Distribution */}
+        <div className="grid lg:grid-cols-2 gap-8 mt-10">
 
-        <div className="bg-slate-800 rounded-xl p-8">
+          <motion.div
+            whileHover={{ scale: 1.01 }}
+            className="bg-slate-800 rounded-2xl p-8 border border-slate-700"
+          >
 
-          <h3 className="text-2xl font-bold text-white mb-8">
-            Threat Distribution
-          </h3>
+            <h3 className="text-2xl font-bold text-white mb-8">
+              Threat Distribution
+            </h3>
 
-          <div style={{ width: "100%", height: 400 }}>
+            <ResponsiveContainer
+              width="100%"
+              height={350}
+            >
 
-            <ResponsiveContainer>
-
-              <BarChart
-                data={chartData}
-              >
+              <BarChart data={chartData}>
 
                 <CartesianGrid
-                  strokeDasharray="3 3"
                   stroke="#475569"
+                  strokeDasharray="3 3"
                 />
 
                 <XAxis
@@ -152,15 +174,13 @@ function Analytics() {
                   stroke="#ffffff"
                 />
 
-                <YAxis
-                  stroke="#ffffff"
-                />
+                <YAxis stroke="#ffffff" />
 
                 <Tooltip />
 
                 <Bar
                   dataKey="count"
-                  radius={[8, 8, 0, 0]}
+                  radius={[10, 10, 0, 0]}
                 >
 
                   {chartData.map((entry, index) => (
@@ -178,13 +198,67 @@ function Analytics() {
 
             </ResponsiveContainer>
 
-          </div>
+          </motion.div>
+
+          <motion.div
+            whileHover={{ scale: 1.01 }}
+            className="bg-slate-800 rounded-2xl border border-slate-700 p-8"
+          >
+
+            <h3 className="text-2xl font-bold text-white mb-8">
+              Overall Statistics
+            </h3>
+
+            <div className="space-y-8">
+
+              <div>
+
+                <p className="text-gray-400">
+                  Average Threat Score
+                </p>
+
+                <h2 className="text-5xl font-bold text-green-400 mt-2">
+                  {averageScore}
+                </h2>
+
+              </div>
+
+              <div>
+
+                <p className="text-gray-400">
+                  Security Status
+                </p>
+
+                <h2 className="text-3xl font-bold text-white mt-2">
+                  {malicious === 0
+                    ? "Excellent"
+                    : suspicious > malicious
+                    ? "Moderate"
+                    : "High Risk"}
+                </h2>
+
+              </div>
+
+              <div>
+
+                <p className="text-gray-400">
+                  Last Scan Count
+                </p>
+
+                <h2 className="text-3xl font-bold text-cyan-400 mt-2">
+                  {total}
+                </h2>
+
+              </div>
+
+            </div>
+
+          </motion.div>
 
         </div>
 
       </div>
-
-    </div>
+    </section>
   );
 }
 

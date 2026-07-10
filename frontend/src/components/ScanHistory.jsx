@@ -2,14 +2,19 @@ import { useEffect, useState } from "react";
 import API from "../services/api";
 import { Trash2 } from "lucide-react";
 import { saveAs } from "file-saver";
+import { toast } from "react-hot-toast";
 
-function ScanHistory() {
+function ScanHistory({ refresh }) {
   const [history, setHistory] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     loadHistory();
-  }, []);
+  }, [refresh]);
+
+  const isLoggedIn = () => {
+    return localStorage.getItem("user") !== null;
+  };
 
   const loadHistory = async () => {
     try {
@@ -21,57 +26,76 @@ function ScanHistory() {
   };
 
   const deleteHistory = async (id) => {
+    if (!isLoggedIn()) {
+      toast.error("Please login first.");
+      return;
+    }
+
     if (!window.confirm("Delete this scan?")) return;
 
     try {
       await API.delete(`/history/${id}`);
       loadHistory();
+      toast.success("History deleted.");
     } catch (err) {
       console.log(err);
     }
   };
 
   const clearHistory = async () => {
+    if (!isLoggedIn()) {
+      toast.error("Please login first.");
+      return;
+    }
+
     if (!window.confirm("Clear all scan history?")) return;
 
     try {
       await API.delete("/history");
       loadHistory();
+      toast.success("History cleared.");
     } catch (err) {
       console.log(err);
     }
   };
+
   const exportCSV = () => {
-  const headers = [
-    "URL",
-    "Threat Score",
-    "Classification",
-    "Country",
-    "IP",
-    "Scan Date",
-  ];
+    if (!isLoggedIn()) {
+      toast.error("Please login first.");
+      return;
+    }
 
-  const rows = history.map((item) => [
-    item.url,
-    item.threat_score,
-    item.classification,
-    item.country,
-    item.ip,
-    item.scan_date,
-  ]);
+    const headers = [
+      "URL",
+      "Threat Score",
+      "Classification",
+      "Country",
+      "IP",
+      "Scan Date",
+    ];
 
-  const csvContent = [headers, ...rows]
-    .map((row) => row.join(","))
-    .join("\n");
+    const rows = history.map((item) => [
+      item.url,
+      item.threat_score,
+      item.classification,
+      item.country,
+      item.ip,
+      item.scan_date,
+    ]);
 
-  const blob = new Blob([csvContent], {
-    type: "text/csv;charset=utf-8;",
-  });
+    const csvContent = [headers, ...rows]
+      .map((row) => row.join(","))
+      .join("\n");
 
-  saveAs(blob, "LinkShield_Scan_History.csv");
-};
+    const blob = new Blob([csvContent], {
+      type: "text/csv;charset=utf-8;",
+    });
 
-  // Search Filter
+    saveAs(blob, "LinkShield_Scan_History.csv");
+
+    toast.success("CSV Exported Successfully");
+  };
+
   const filteredHistory = history.filter((item) =>
     item.url.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -83,7 +107,7 @@ function ScanHistory() {
     >
       <div className="bg-slate-900 border border-slate-700 rounded-2xl shadow-xl p-8">
 
-        <div className="flex justify-between items-center mb-8 flex-wrap gap-4">
+        <div className="flex justify-between items-center flex-wrap gap-4 mb-8">
 
           <h2 className="text-3xl font-bold text-white">
             📜 Scan History
@@ -91,31 +115,30 @@ function ScanHistory() {
 
           <div className="flex gap-3">
 
-  <button
-    onClick={exportCSV}
-    className="bg-green-600 hover:bg-green-700 px-5 py-3 rounded-xl text-white font-semibold transition"
-  >
-    📄 Export CSV
-  </button>
+            <button
+              onClick={exportCSV}
+              className="bg-green-600 hover:bg-green-700 px-5 py-3 rounded-xl text-white font-semibold transition"
+            >
+              📄 Export CSV
+            </button>
 
-  <button
-    onClick={clearHistory}
-    className="bg-red-600 hover:bg-red-700 px-5 py-3 rounded-xl text-white font-semibold transition"
-  >
-    🗑 Clear History
-  </button>
+            <button
+              onClick={clearHistory}
+              className="bg-red-600 hover:bg-red-700 px-5 py-3 rounded-xl text-white font-semibold transition"
+            >
+              🗑 Clear History
+            </button>
 
-</div>
+          </div>
 
         </div>
 
-        {/* Search Box */}
         <input
           type="text"
           placeholder="🔍 Search URL..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full md:w-96 mb-6 p-3 rounded-xl border border-slate-600 bg-slate-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full md:w-96 mb-6 p-3 rounded-xl border border-slate-600 bg-slate-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
         />
 
         {filteredHistory.length === 0 ? (
@@ -123,7 +146,6 @@ function ScanHistory() {
             No matching URLs found.
           </p>
         ) : (
-
           <div className="overflow-x-auto">
 
             <table className="w-full">
@@ -133,12 +155,12 @@ function ScanHistory() {
                 <tr className="bg-slate-800 text-gray-300">
 
                   <th className="p-4 text-left">URL</th>
-                  <th className="p-4">Score</th>
-                  <th className="p-4">Status</th>
-                  <th className="p-4">Country</th>
-                  <th className="p-4">IP</th>
-                  <th className="p-4">Time</th>
-                  <th className="p-4">Action</th>
+                  <th className="p-4 text-center">Score</th>
+                  <th className="p-4 text-center">Status</th>
+                  <th className="p-4 text-center">Country</th>
+                  <th className="p-4 text-center">IP Address</th>
+                  <th className="p-4 text-center">Scan Time</th>
+                  <th className="p-4 text-center">Action</th>
 
                 </tr>
 
@@ -150,7 +172,7 @@ function ScanHistory() {
 
                   <tr
                     key={item.id}
-                    className="border-b border-slate-700 hover:bg-slate-800"
+                    className="border-b border-slate-700 hover:bg-slate-800 transition"
                   >
 
                     <td className="p-4 text-blue-400 break-all">
@@ -195,7 +217,10 @@ function ScanHistory() {
                         onClick={() => deleteHistory(item.id)}
                         className="bg-red-500 hover:bg-red-600 p-2 rounded-lg"
                       >
-                        <Trash2 size={18} color="white" />
+                        <Trash2
+                          size={18}
+                          color="white"
+                        />
                       </button>
 
                     </td>
@@ -209,11 +234,9 @@ function ScanHistory() {
             </table>
 
           </div>
-
         )}
 
       </div>
-
     </div>
   );
 }

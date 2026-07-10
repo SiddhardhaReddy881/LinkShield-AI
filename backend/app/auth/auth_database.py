@@ -10,19 +10,17 @@ def get_connection():
     return conn
 
 
-def create_table():
+def create_user_table():
     conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute("""
-        CREATE TABLE IF NOT EXISTS scan_history (
+        CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            url TEXT NOT NULL,
-            threat_score INTEGER,
-            classification TEXT,
-            country TEXT,
-            ip TEXT,
-            scan_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            username TEXT NOT NULL,
+            email TEXT UNIQUE NOT NULL,
+            password TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     """)
 

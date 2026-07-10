@@ -17,6 +17,10 @@ from app.services.dns_service import get_dns_info
 from app.services.security_headers_service import check_security_headers
 from app.services.threat_score_service import calculate_threat_score
 
+from app.auth.auth_database import create_user_table
+from app.auth.auth_service import register_user, login_user
+from app.auth.forgot_password import reset_password
+
 from app.history.database import create_table
 from app.history.history_service import (
     save_scan,
@@ -31,8 +35,9 @@ app = FastAPI(
     description="Backend API for LinkShield AI"
 )
 
-# Create SQLite table
+# Create Database Tables
 create_table()
+create_user_table()
 
 app.add_middleware(
     CORSMiddleware,
@@ -48,9 +53,33 @@ app.add_middleware(
 )
 
 
+# --------------------------------------------------
+# Request Models
+# --------------------------------------------------
+
 class URLRequest(BaseModel):
     url: str
 
+
+class RegisterRequest(BaseModel):
+    username: str
+    email: str
+    password: str
+
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+
+class ForgotPasswordRequest(BaseModel):
+    email: str
+    new_password: str
+
+
+# --------------------------------------------------
+# Home
+# --------------------------------------------------
 
 @app.get("/")
 def home():
@@ -59,10 +88,42 @@ def home():
     }
 
 
+# --------------------------------------------------
+# Authentication APIs
+# --------------------------------------------------
+
+@app.post("/register")
+def register(request: RegisterRequest):
+    return register_user(
+        request.username,
+        request.email,
+        request.password,
+    )
+
+
+@app.post("/login")
+def login(request: LoginRequest):
+    return login_user(
+        request.email,
+        request.password,
+    )
+
+
+@app.post("/forgot-password")
+def forgot_password(request: ForgotPasswordRequest):
+    return reset_password(
+        request.email,
+        request.new_password,
+    )
+
+
+# --------------------------------------------------
+# URL Scan API
+# --------------------------------------------------
+
 @app.post("/scan")
 def scan(request: URLRequest):
 
-    # Step 1: Validate URL
     valid, message = validate_url(request.url)
 
     if not valid:
@@ -71,20 +132,24 @@ def scan(request: URLRequest):
             "message": message
         }
 
-    # Step 2: Extract URL features
     features = extract_features(request.url)
 
-    # Step 3: WHOIS Lookup
     whois_info = get_whois_info(request.url)
 
-    # Step 4: Security Analysis
     ssl_info = check_ssl(request.url)
+
     webpage_info = analyze_webpage(request.url)
+
     virustotal_info = scan_url_virustotal(request.url)
+
     google_safe_info = check_safe_browsing(request.url)
+
     ip_info = get_ip_info(request.url)
+
     domain_age = calculate_domain_age(whois_info)
+
     dns_info = get_dns_info(request.url)
+
     security_headers = check_security_headers(request.url)
 
     risk = calculate_risk_score(
@@ -101,7 +166,6 @@ def scan(request: URLRequest):
         security_headers,
     )
 
-    # Save scan history
     save_scan(
         url=request.url,
         threat_score=threat_score["overall_score"],
@@ -110,7 +174,7 @@ def scan(request: URLRequest):
         ip=ip_info.get("ip"),
     )
 
-    ## prediction = predict_url(features)
+    # prediction = predict_url(features)
 
     return {
         "status": "success",
@@ -127,8 +191,17 @@ def scan(request: URLRequest):
         "dns": dns_info,
         "http_security": security_headers,
         "risk": risk,
-        "threat_analysis": threat_score
+        "threat_analysis": threat_score,
     }
+
+
+# --------------------------------------------------
+# History APIs
+# --------------------------------------------------
+
+@app.get("/history")
+def history():
+    return get_history()
 
 
 @app.delete("/history/{scan_id}")

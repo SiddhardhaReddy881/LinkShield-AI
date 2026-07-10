@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 API_KEY = os.getenv("VIRUSTOTAL_API_KEY")
+print("VirusTotal API Loaded:", API_KEY is not None)
 
 
 def scan_url_virustotal(url: str):
