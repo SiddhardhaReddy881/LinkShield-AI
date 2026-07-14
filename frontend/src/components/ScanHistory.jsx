@@ -13,7 +13,7 @@ function ScanHistory({ refresh }) {
   }, [refresh]);
 
   const isLoggedIn = () => {
-    return localStorage.getItem("user") !== null;
+    return sessionStorage.getItem("user") !== null;
   };
 
   const loadHistory = async () => {

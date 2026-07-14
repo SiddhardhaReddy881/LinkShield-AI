@@ -4,7 +4,7 @@ import { toast } from "react-hot-toast";
 
 function ExportPDFButton({ data }) {
   const isLoggedIn = () => {
-    return localStorage.getItem("user") !== null;
+    return sessionStorage.getItem("user") !== null;
   };
 
   const downloadPDF = () => {

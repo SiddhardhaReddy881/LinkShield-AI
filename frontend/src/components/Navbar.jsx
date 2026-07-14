@@ -129,6 +129,18 @@ function Navbar() {
               </div>
             </a>
 
+            {user && (
+              <Link
+                to="/admin"
+                className={menuClass("/admin")}
+              >
+                <div className="flex items-center gap-2">
+                  <ShieldCheck size={18} />
+                  Admin
+                </div>
+              </Link>
+            )}
+
           </div>
 
           {/* User */}
@@ -233,6 +245,16 @@ function Navbar() {
             <a href="#features" onClick={() => setMobileMenu(false)} className="text-white hover:text-green-400 transition text-lg">
               ⭐ Features
             </a>
+
+            {user && (
+              <Link
+                to="/admin"
+                onClick={() => setMobileMenu(false)}
+                className="text-white hover:text-green-400 transition text-lg flex items-center gap-2"
+              >
+                🛡️ Admin Dashboard
+              </Link>
+            )}
 
             {!user ? (
 

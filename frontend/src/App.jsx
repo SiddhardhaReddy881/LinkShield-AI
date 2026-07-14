@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
+import AdminDashboard from "./pages/AdminDashboard";
 
 import BackToTop from "./components/BackToTop";
 
@@ -32,6 +33,11 @@ function App() {
           path="/forgot-password"
           element={<ForgotPassword />}
         />
+
+        <Route
+  path="/admin"
+  element={<AdminDashboard />}
+/>
 
       </Routes>
 

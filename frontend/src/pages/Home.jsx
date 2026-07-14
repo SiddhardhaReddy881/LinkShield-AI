@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import API from "../services/api";
 
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
@@ -13,23 +14,34 @@ import Footer from "../components/Footer";
 function Home() {
   const [refreshHistory, setRefreshHistory] = useState(0);
 
+  useEffect(() => {
+    const registerVisit = async () => {
+      try {
+        await API.get("/visit");
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    registerVisit();
+  }, []);
+
   return (
     <div className="min-h-screen bg-slate-950">
 
       <Navbar />
 
-<Hero />
+      <Hero />
 
+      <URLScanner
+        onScanComplete={() =>
+          setRefreshHistory((prev) => prev + 1)
+        }
+      />
 
-<URLScanner
-  onScanComplete={() =>
-    setRefreshHistory((prev) => prev + 1)
-  }
-/> 
+      <Statistics />
 
-<Statistics />
-
-<Analytics />
+      <Analytics />
 
       <ScanHistory
         refresh={refreshHistory}
