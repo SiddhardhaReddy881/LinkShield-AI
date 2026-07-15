@@ -17,7 +17,7 @@ function ScanTrendsChart({ trends }) {
   const getChartData = () => {
     switch (timeframe) {
       case "weekly":
-        return trends.weekly.map((item) => ({
+        return (trends.weekly || []).map((item) => ({
           name: `Wk ${item.week.split("-")[1] || item.week}`,
           scans: item.count,
         }));
@@ -26,7 +26,7 @@ function ScanTrendsChart({ trends }) {
           "Jan", "Feb", "Mar", "Apr", "May", "Jun",
           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
         ];
-        return trends.monthly.map((item) => {
+        return (trends.monthly || []).map((item) => {
           const monthNum = parseInt(item.month.split("-")[1], 10);
           const monthName = !isNaN(monthNum) && monthNum >= 1 && monthNum <= 12
             ? monthNames[monthNum - 1]
@@ -38,7 +38,7 @@ function ScanTrendsChart({ trends }) {
         });
       case "daily":
       default:
-        return trends.daily.map((item) => {
+        return (trends.daily || []).map((item) => {
           // format YYYY-MM-DD to MM-DD
           const parts = item.date.split("-");
           const dateStr = parts.length >= 3 ? `${parts[1]}-${parts[2]}` : item.date;

@@ -1,13 +1,4 @@
-import sqlite3
-import os
-
-DATABASE_NAME = "/tmp/history.db" if os.environ.get("VERCEL") else "history.db"
-
-
-def get_connection():
-    conn = sqlite3.connect(DATABASE_NAME)
-    conn.row_factory = sqlite3.Row
-    return conn
+from app.database import get_connection
 
 
 def create_user_table():
@@ -20,9 +11,26 @@ def create_user_table():
             username TEXT NOT NULL,
             email TEXT UNIQUE NOT NULL,
             password TEXT NOT NULL,
+            is_online INTEGER DEFAULT 0,
+            last_login TIMESTAMP,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     """)
 
+    try:
+        cursor.execute(
+            "ALTER TABLE users ADD COLUMN is_online INTEGER DEFAULT 0"
+        )
+    except:
+        pass
+
+    try:
+        cursor.execute(
+            "ALTER TABLE users ADD COLUMN last_login TIMESTAMP"
+        )
+    except:
+        pass
+
     conn.commit()
     conn.close()
+    

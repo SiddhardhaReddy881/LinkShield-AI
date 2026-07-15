@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import API from "../services/api";
 import {
   ShieldCheck,
   Home,
@@ -29,7 +30,15 @@ function Navbar() {
     }
   }, []);
 
-  const logout = () => {
+  const logout = async () => {
+    if (user?.id) {
+      try {
+        await API.post("/logout", { user_id: user.id });
+      } catch (error) {
+        console.warn("Logout API failed:", error);
+      }
+    }
+
     sessionStorage.removeItem("user");
     setUser(null);
     navigate("/");
@@ -207,14 +216,14 @@ function Navbar() {
               </div>
 
               <button
-  onClick={() => {
-    logout();
-    setMobileMenu(false);
-  }}
-  className="bg-red-600 hover:bg-red-700 py-3 rounded-xl text-white rounded-xl transition"
->
-  Logout
-</button>
+                onClick={() => {
+                  logout();
+                  setMobileMenu(false);
+                }}
+                className="bg-red-600 hover:bg-red-700 px-5 py-2 rounded-xl text-white font-semibold transition"
+              >
+                Logout
+              </button>
 
             </div>
 

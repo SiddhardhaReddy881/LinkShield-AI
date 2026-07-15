@@ -51,6 +51,10 @@ function AdminDashboard() {
   const [usersSearch, setUsersSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [apiError, setApiError] = useState(null);
+
+  const isMalicious = (classification) =>
+    classification === "MALICIOUS" || classification === "DANGEROUS";
 
   const maxScanIdRef = useRef(0);
 
@@ -129,7 +133,7 @@ function AdminDashboard() {
 
         if (maxScanIdRef.current > 0) {
           const maliciousScans = newScans.filter(
-            (s) => s.id > maxScanIdRef.current && s.classification === "MALICIOUS"
+            (s) => s.id > maxScanIdRef.current && isMalicious(s.classification)
           );
 
           if (maliciousScans.length > 0) {
@@ -156,8 +160,17 @@ function AdminDashboard() {
           maxScanIdRef.current = currentMaxId;
         }
       }
+      setApiError(null);
     } catch (err) {
       console.error("Error loading admin dashboard statistics:", err);
+      const message =
+        err.response?.status === 404
+          ? "Admin API not found. Backend may need redeploying."
+          : "Unable to sync with backend. Check API connection.";
+      setApiError(message);
+      if (isFirstLoad) {
+        toast.error(message);
+      }
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -287,8 +300,8 @@ function AdminDashboard() {
     doc.setTextColor(15, 23, 42);
     doc.text("3. Recent Malicious URL Detection Summary", 20, 20);
 
-    const maliciousRecent = recentScans.filter(
-      (s) => s.classification === "MALICIOUS"
+    const maliciousRecent = recentScans.filter((s) =>
+      isMalicious(s.classification)
     );
 
     y = 32;

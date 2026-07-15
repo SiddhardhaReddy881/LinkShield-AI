@@ -1,13 +1,4 @@
-import sqlite3
-import os
-
-DATABASE_NAME = "/tmp/history.db" if os.environ.get("VERCEL") else "history.db"
-
-
-def get_connection():
-    conn = sqlite3.connect(DATABASE_NAME)
-    conn.row_factory = sqlite3.Row
-    return conn
+from app.database import get_connection
 
 
 def create_table():
@@ -25,6 +16,14 @@ def create_table():
             scan_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     """)
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS visitors (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        visitor_ip TEXT,
+        visit_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+""")
 
     conn.commit()
     conn.close()

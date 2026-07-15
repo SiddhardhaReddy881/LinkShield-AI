@@ -62,14 +62,20 @@ function Dashboard({ data }) {
         <InfoCard
           icon="🦠"
           title="VirusTotal"
-          value={`${data.virustotal?.harmless} Engines Clean`}
+          value={
+            data.virustotal?.error
+              ? "Unavailable"
+              : `${data.virustotal?.harmless ?? 0} Engines Clean`
+          }
         />
 
         <InfoCard
           icon="🛡️"
           title="Google Safe Browsing"
           value={
-            data.google_safe_browsing?.safe
+            data.google_safe_browsing?.error
+              ? "Unavailable"
+              : data.google_safe_browsing?.safe
               ? "Safe"
               : "Unsafe"
           }
@@ -88,25 +94,31 @@ function Dashboard({ data }) {
         <InfoCard
           icon="🌐"
           title="IP Address"
-          value={data.ip_info?.ip}
+          value={data.ip_info?.ip || "Unknown"}
         />
 
         <InfoCard
           icon="🌍"
           title="Country"
-          value={data.ip_info?.country}
+          value={data.ip_info?.country || "Unknown"}
         />
 
         <InfoCard
           icon="🏢"
           title="Registrar"
-          value={data.whois?.registrar}
+          value={data.whois?.registrar || "Unknown"}
         />
 
         <InfoCard
           icon="🔒"
           title="SSL Certificate"
-          value={data.ssl?.ssl_valid ? "Valid" : "Invalid"}
+          value={
+            data.ssl?.error
+              ? "Unavailable"
+              : data.ssl?.ssl_valid
+              ? "Valid"
+              : "Invalid"
+          }
         />
 
         <InfoCard

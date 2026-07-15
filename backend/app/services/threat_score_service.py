@@ -71,7 +71,7 @@ def calculate_threat_score(
     elif score >= 60:
         classification = "SUSPICIOUS"
     else:
-        classification = "DANGEROUS"
+        classification = "MALICIOUS"
 
     confidence = f"{score}%"
 
